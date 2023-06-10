@@ -1,0 +1,149 @@
+{
+  "id": 123,
+  "roomNumber": 1,
+  "rows": [
+    {
+      "rowNumber": 1,
+      "shift": false,
+      "seats": [
+        {
+          "seatNumber": 1,
+          "positionInRow": 1,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 2,
+          "positionInRow": 2,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 3,
+          "positionInRow": 5,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 4,
+          "positionInRow": 6,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 5,
+          "positionInRow": 7,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 6,
+          "positionInRow": 10,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 7,
+          "positionInRow": 11,
+          "type": "normal"
+        }
+      ]
+    },
+    {
+      "rowNumber": 2,
+      "shift": true,
+      "seats": [
+        {
+          "seatNumber": 1,
+          "positionInRow": 1,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 2,
+          "positionInRow": 2,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 3,
+          "positionInRow": 5,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 4,
+          "positionInRow": 6,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 5,
+          "positionInRow": 7,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 6,
+          "positionInRow": 10,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 7,
+          "positionInRow": 11,
+          "type": "normal"
+        }
+      ]
+    },
+    {
+      "rowNumber": 3,
+      "shift": false,
+      "seats": [
+        {
+          "seatNumber": 1,
+          "positionInRow": 1,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 2,
+          "positionInRow": 2,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 3,
+          "positionInRow": 3,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 4,
+          "positionInRow": 4,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 5,
+          "positionInRow": 5,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 6,
+          "positionInRow": 6,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 7,
+          "positionInRow": 7,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 8,
+          "positionInRow": 8,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 9,
+          "positionInRow": 9,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 10,
+          "positionInRow": 10,
+          "type": "normal"
+        },
+        {
+          "seatNumber": 11,
+          "positionInRow": 11,
+          "type": "normal"
+        }
+      ]
+    }
+  ]
+}
