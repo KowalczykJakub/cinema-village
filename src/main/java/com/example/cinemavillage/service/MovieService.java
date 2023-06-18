@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -48,7 +49,8 @@ public class MovieService {
 
         var movieResults = (List<LinkedHashMap>) moviesResponse.get("results");
         int numberOfMovies = 5;
-        System.out.println(numberOfMovies);
+
+        List<Movie> savedMovies = new ArrayList<>();
         for (var movieResult : movieResults) {
             Integer movieId = (Integer) movieResult.get("id");
 
@@ -80,25 +82,30 @@ public class MovieService {
             movie.setPosterPath("https://image.tmdb.org/t/p/w500" + posterPath);
 
             movie = movieRepository.save(movie);
+            savedMovies.add(movie);
+        }
 
+        for (Movie movie : savedMovies) {
             generateAndSaveScreenings(movie, numberOfMovies);
         }
     }
 
-    private void generateAndSaveScreenings(Movie movie, int numScreenings) {
+    private void generateAndSaveScreenings(Movie movie, int numDays) {
         LocalDateTime now = LocalDateTime.now();
         Room room = roomRepository.findById(1L).orElseThrow(() -> new RuntimeException("Room not found"));
         List<LocalTime> times = List.of(LocalTime.of(10, 0), LocalTime.of(13, 0), LocalTime.of(16, 0), LocalTime.of(20, 0));
 
-        for (int i = 0; i < numScreenings; i++) {
-            LocalDateTime dateTime = now.plusDays(i).with(times.get(i % times.size()));
+        for (int i = 0; i < numDays; i++) {
+            for (LocalTime time : times) {
+                LocalDateTime dateTime = now.plusDays(i).with(time);
 
-            Screening screening = new Screening();
-            screening.setScreeningTime(dateTime);
-            screening.setMovie(movie);
-            screening.setRoom(room);
+                Screening screening = new Screening();
+                screening.setScreeningTime(dateTime);
+                screening.setMovie(movie);
+                screening.setRoom(room);
 
-            screeningRepository.save(screening);
+                screeningRepository.save(screening);
+            }
         }
     }
 }

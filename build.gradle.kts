@@ -22,6 +22,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.12.7.1")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     implementation("org.apache.pdfbox:pdfbox:2.0.27")
+    implementation("org.flywaydb:flyway-core:9.19.4")
+    implementation("org.flywaydb:flyway-mysql:9.19.4")
 }
 
 tasks.withType<Test> {
