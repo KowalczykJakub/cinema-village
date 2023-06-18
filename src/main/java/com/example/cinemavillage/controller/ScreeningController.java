@@ -1,8 +1,6 @@
 package com.example.cinemavillage.controller;
 
-import com.example.cinemavillage.model.Movie;
-import com.example.cinemavillage.model.Room;
-import com.example.cinemavillage.model.Screening;
+import com.example.cinemavillage.model.*;
 import com.example.cinemavillage.service.RoomService;
 import com.example.cinemavillage.service.ScreeningService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,17 +21,22 @@ public class ScreeningController {
     }
 
     @GetMapping
-    public List<Screening> getScreenings() {
+    public List<ScreeningDto> getScreenings() {
         return screeningService.findAllScreenings();
     }
 
     @GetMapping("/{id}")
-    public Screening getScreening(@PathVariable Long id) {
+    public ScreeningDto getScreening(@PathVariable Long id) {
         return screeningService.findScreeningById(id);
     }
 
     @GetMapping("/date")
-    public List<Screening> getDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+    public List<ScreeningDto> getDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return screeningService.findScreeningsByDate(date);
+    }
+
+    @GetMapping("/{screeningId}/available-seats")
+    public AvailableSeatsDto getAvailableSeats(@PathVariable Long screeningId) {
+        return screeningService.getAvailableSeats(screeningId);
     }
 }

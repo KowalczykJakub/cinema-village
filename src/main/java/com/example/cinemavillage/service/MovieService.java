@@ -49,7 +49,8 @@ public class MovieService {
         var moviesResponse = restTemplate.getForObject(url, LinkedHashMap.class);
 
         var movieResults = (List<LinkedHashMap>) moviesResponse.get("results");
-        int numberOfMovies = movieResults.size();
+        int numberOfMovies = 5;
+        System.out.println(numberOfMovies);
         for (var movieResult : movieResults) {
             Integer movieId = (Integer) movieResult.get("id");
 
