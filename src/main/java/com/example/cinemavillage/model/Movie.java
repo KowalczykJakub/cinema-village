@@ -18,6 +18,8 @@ public class Movie {
     private String overview;
     private LocalDate releaseDate;
     private Integer runtime;
+    @Column(name = "poster_path")
+    private String posterPath;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -87,5 +89,13 @@ public class Movie {
 
     public void setRuntime(Integer runtime) {
         this.runtime = runtime;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 }

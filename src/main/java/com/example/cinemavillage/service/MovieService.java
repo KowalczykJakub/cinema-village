@@ -61,6 +61,7 @@ public class MovieService {
             String overview = (String) movieDetails.get("overview");
             String releaseDate = (String) movieDetails.get("release_date");
             Integer runtime = (Integer) movieDetails.get("runtime");
+            String posterPath = (String) movieResult.get("poster_path");
 
             url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=" + TMDB_API_KEY;
             var credits = restTemplate.getForObject(url, LinkedHashMap.class);
@@ -78,6 +79,7 @@ public class MovieService {
             movie.setReleaseDate(LocalDate.parse(releaseDate));
             movie.setRuntime(runtime);
             movie.setDirector(director);
+            movie.setPosterPath("https://image.tmdb.org/t/p/w500" + posterPath);
 
             movie = movieRepository.save(movie);
 
