@@ -1,6 +1,7 @@
 package com.example.cinemavillage.service;
 
 import com.example.cinemavillage.model.*;
+import com.example.cinemavillage.repository.ReservationRepository;
 import com.example.cinemavillage.repository.ScreeningRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,11 @@ import java.util.stream.Collectors;
 public class ScreeningService {
 
     private final ScreeningRepository screeningRepository;
+    private final ReservationRepository reservationRepository;
 
-    public ScreeningService(ScreeningRepository screeningRepository) {
+    public ScreeningService(ScreeningRepository screeningRepository, ReservationRepository reservationRepository) {
         this.screeningRepository = screeningRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     public List<ScreeningDto> findAllScreenings() {
@@ -26,10 +29,9 @@ public class ScreeningService {
                 .collect(Collectors.toList());
     }
 
-    public ScreeningDto findScreeningById(Long id) {
-        Screening screening = screeningRepository.findById(id)
+    public Screening findScreeningById(Long id) {
+        return screeningRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Screening not found with id " + id));
-        return mapToDto(screening);
     }
 
     public List<Screening> findScreeningsByDate(LocalDate date) {
@@ -56,7 +58,9 @@ public class ScreeningService {
 
         for (Row row : screening.getRoom().getRows()) {
             for (Seat seat : row.getSeats()) {
-                if (!seat.getReserved()) {
+                Reservation existingReservation = reservationRepository.findByScreeningAndSeat(screening, seat);
+
+                if (existingReservation == null) {
                     if ("normal".equals(seat.getType())) {
                         normalSeats++;
                     } else if ("premium".equals(seat.getType())) {

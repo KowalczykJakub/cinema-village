@@ -2,6 +2,7 @@ package com.example.cinemavillage.controller;
 
 import com.example.cinemavillage.model.AvailableSeatsDto;
 import com.example.cinemavillage.model.MovieInfoDto;
+import com.example.cinemavillage.model.Screening;
 import com.example.cinemavillage.model.ScreeningDto;
 import com.example.cinemavillage.service.ScreeningService;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -27,7 +28,7 @@ public class ScreeningController {
     }
 
     @GetMapping("/{id}")
-    public ScreeningDto getScreening(@PathVariable Long id) {
+    public Screening getScreening(@PathVariable Long id) {
         return screeningService.findScreeningById(id);
     }
 

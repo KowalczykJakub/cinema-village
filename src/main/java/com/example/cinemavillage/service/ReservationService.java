@@ -56,7 +56,6 @@ public class ReservationService {
         if (existingReservation != null) {
             throw new RuntimeException("Seat is already reserved for this screening.");
         }
-        seat.setReserved(true);
 
         Reservation reservation = new Reservation();
         reservation.setScreening(screening);
