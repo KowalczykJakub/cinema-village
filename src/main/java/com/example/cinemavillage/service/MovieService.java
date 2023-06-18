@@ -11,12 +11,11 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MovieService {
@@ -85,26 +84,32 @@ public class MovieService {
             savedMovies.add(movie);
         }
 
-        for (Movie movie : savedMovies) {
-            generateAndSaveScreenings(movie, numberOfMovies);
-        }
+        generateAndSaveScreenings(savedMovies, numberOfMovies, 7);
     }
 
-    private void generateAndSaveScreenings(Movie movie, int numDays) {
+    private void generateAndSaveScreenings(List<Movie> movies, int numDays, int moviesPerDay) {
         LocalDateTime now = LocalDateTime.now();
         Room room = roomRepository.findById(1L).orElseThrow(() -> new RuntimeException("Room not found"));
         List<LocalTime> times = List.of(LocalTime.of(10, 0), LocalTime.of(13, 0), LocalTime.of(16, 0), LocalTime.of(20, 0));
 
+        long seed = LocalDate.now().toEpochDay();
+
         for (int i = 0; i < numDays; i++) {
-            for (LocalTime time : times) {
-                LocalDateTime dateTime = now.plusDays(i).with(time);
+            Collections.shuffle(movies, new Random(seed + i));
 
-                Screening screening = new Screening();
-                screening.setScreeningTime(dateTime);
-                screening.setMovie(movie);
-                screening.setRoom(room);
+            for (int j = 0; j < moviesPerDay; j++) {
+                Movie movie = movies.get(j % movies.size());
 
-                screeningRepository.save(screening);
+                for (LocalTime time : times) {
+                    LocalDateTime dateTime = now.plusDays(i).with(time);
+
+                    Screening screening = new Screening();
+                    screening.setScreeningTime(dateTime);
+                    screening.setMovie(movie);
+                    screening.setRoom(room);
+
+                    screeningRepository.save(screening);
+                }
             }
         }
     }
