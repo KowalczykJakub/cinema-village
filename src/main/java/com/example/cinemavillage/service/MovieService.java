@@ -6,7 +6,6 @@ import com.example.cinemavillage.model.Screening;
 import com.example.cinemavillage.repository.MovieRepository;
 import com.example.cinemavillage.repository.RoomRepository;
 import com.example.cinemavillage.repository.ScreeningRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Random;
 
 @Service
 public class MovieService {

@@ -1,6 +1,5 @@
 package com.example.cinemavillage.service;
 
-import com.example.cinemavillage.model.Movie;
 import com.example.cinemavillage.model.Room;
 import com.example.cinemavillage.repository.RoomRepository;
 import org.springframework.stereotype.Service;
@@ -18,5 +17,10 @@ public class RoomService {
 
     public List<Room> findAllRooms() {
         return roomRepository.findAll();
+    }
+
+    public Room findRoomById(Long id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Movie not found with id " + id));
     }
 }

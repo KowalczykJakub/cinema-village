@@ -4,14 +4,16 @@ public class ReservationRequest {
     private Long screeningId;
     private Integer rowNumber;
     private Integer seatNumber;
+    private PersonalInfo personalInfo;
 
     public ReservationRequest() {
     }
 
-    public ReservationRequest(Long screeningId, Integer rowNumber, Integer seatNumber) {
+    public ReservationRequest(Long screeningId, Integer rowNumber, Integer seatNumber, PersonalInfo personalInfo) {
         this.screeningId = screeningId;
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
+        this.personalInfo = personalInfo;
     }
 
     public Long getScreeningId() {
@@ -36,5 +38,13 @@ public class ReservationRequest {
 
     public void setSeatNumber(Integer seatNumber) {
         this.seatNumber = seatNumber;
+    }
+
+    public PersonalInfo getPersonalInfo() {
+        return personalInfo;
+    }
+
+    public void setPersonalInfo(PersonalInfo personalInfo) {
+        this.personalInfo = personalInfo;
     }
 }

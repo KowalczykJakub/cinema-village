@@ -18,7 +18,7 @@ public class Row {
     private Boolean shift;
 
     @ManyToOne
-    @JoinColumn(name="room_id")
+    @JoinColumn(name = "room_id")
     @JsonIgnore
     private Room room;
 

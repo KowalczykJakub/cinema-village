@@ -21,7 +21,7 @@ public class Seat {
     private String type;
 
     @ManyToOne
-    @JoinColumn(name="row_id")
+    @JoinColumn(name = "row_id")
     @JsonIgnore
     private Row row;
 

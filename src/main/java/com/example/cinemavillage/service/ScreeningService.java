@@ -1,14 +1,13 @@
 package com.example.cinemavillage.service;
 
 import com.example.cinemavillage.model.*;
-import com.example.cinemavillage.repository.RoomRepository;
 import com.example.cinemavillage.repository.ScreeningRepository;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,13 +32,10 @@ public class ScreeningService {
         return mapToDto(screening);
     }
 
-    public List<ScreeningDto> findScreeningsByDate(LocalDate date) {
+    public List<Screening> findScreeningsByDate(LocalDate date) {
         LocalDateTime startOfDay = date.atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
-        List<Screening> screenings = screeningRepository.findScreeningsByDay(startOfDay, endOfDay);
-        return screenings.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+        return screeningRepository.findScreeningsByDay(startOfDay, endOfDay);
     }
 
     private ScreeningDto mapToDto(Screening screening) {
@@ -71,5 +67,37 @@ public class ScreeningService {
         }
 
         return new AvailableSeatsDto(normalSeats, premiumSeats);
+    }
+
+    public List<MovieInfoDto> findMoviesWithScreeningsByDate(LocalDate date) {
+        List<Screening> screenings = findScreeningsByDate(date);
+        Map<Long, List<ScreeningInfoDto>> screeningsByMovieId = screenings.stream()
+                .collect(Collectors.groupingBy(screening -> screening.getMovie().getId(),
+                        Collectors.mapping(this::convertToScreeningInfoDto, Collectors.toList())));
+        return screenings.stream()
+                .map(Screening::getMovie)
+                .distinct()
+                .map(movie -> convertToMovieDto(movie, screeningsByMovieId.get(movie.getId())))
+                .collect(Collectors.toList());
+    }
+
+    private ScreeningInfoDto convertToScreeningInfoDto(Screening screening) {
+        ScreeningInfoDto dto = new ScreeningInfoDto();
+        dto.setScreeningId(screening.getId());
+        dto.setTime(screening.getScreeningTime().toLocalTime());
+        return dto;
+    }
+
+    private MovieInfoDto convertToMovieDto(Movie movie, List<ScreeningInfoDto> screenings) {
+        MovieInfoDto dto = new MovieInfoDto();
+        dto.setId(movie.getId());
+        dto.setTitle(movie.getTitle());
+        dto.setDirector(movie.getDirector());
+        dto.setOverview(movie.getOverview());
+        dto.setReleaseDate(movie.getReleaseDate());
+        dto.setRuntime(movie.getRuntime());
+        dto.setPosterPath(movie.getPosterPath());
+        dto.setScreenings(screenings);
+        return dto;
     }
 }

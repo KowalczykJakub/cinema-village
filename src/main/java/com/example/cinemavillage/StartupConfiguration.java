@@ -19,10 +19,10 @@ public class StartupConfiguration {
     public CommandLineRunner loadData() {
         return (args) -> {
             Room room = JsonUtil.readJsonWithObjectMapper("src/main/resources/json/example-of-room.json");
-            if(room.getRows() != null) {
+            if (room.getRows() != null) {
                 room.getRows().forEach(row -> {
                     row.setRoom(room);
-                    if(row.getSeats() != null) {
+                    if (row.getSeats() != null) {
                         row.getSeats().forEach(seat -> seat.setRow(row));
                     }
                 });

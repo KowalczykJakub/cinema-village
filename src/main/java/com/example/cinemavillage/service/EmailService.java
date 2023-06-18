@@ -29,7 +29,7 @@ public class EmailService {
             helper.setText(text);
 
             File file = new File(pathToAttachment);
-            if(file.exists()){
+            if (file.exists()) {
                 helper.addAttachment(file.getName(), file);
             }
 
