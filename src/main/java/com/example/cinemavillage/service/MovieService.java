@@ -12,6 +12,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedHashMap;
@@ -51,7 +52,14 @@ public class MovieService {
         int numberOfMovies = movieResults.size();
         for (var movieResult : movieResults) {
             Integer movieId = (Integer) movieResult.get("id");
-            String title = (String) movieResult.get("title");
+
+            url = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + TMDB_API_KEY + "&language=en-US";
+            var movieDetails = restTemplate.getForObject(url, LinkedHashMap.class);
+
+            String title = (String) movieDetails.get("title");
+            String overview = (String) movieDetails.get("overview");
+            String releaseDate = (String) movieDetails.get("release_date");
+            Integer runtime = (Integer) movieDetails.get("runtime");
 
             url = "https://api.themoviedb.org/3/movie/" + movieId + "/credits?api_key=" + TMDB_API_KEY;
             var credits = restTemplate.getForObject(url, LinkedHashMap.class);
@@ -65,6 +73,9 @@ public class MovieService {
 
             Movie movie = new Movie();
             movie.setTitle(title);
+            movie.setOverview(overview);
+            movie.setReleaseDate(LocalDate.parse(releaseDate));
+            movie.setRuntime(runtime);
             movie.setDirector(director);
 
             movie = movieRepository.save(movie);

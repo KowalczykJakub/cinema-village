@@ -19,7 +19,7 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<String> makeReservation(@RequestBody ReservationRequest request) {
         try {
-            reservationService.reserveSeat(request.getScreeningId(), request.getRoomId(), request.getRowNumber(), request.getSeatNumber());
+            reservationService.reserveSeat(request.getScreeningId(), request.getRowNumber(), request.getSeatNumber());
             return new ResponseEntity<>("Reservation made successfully.", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

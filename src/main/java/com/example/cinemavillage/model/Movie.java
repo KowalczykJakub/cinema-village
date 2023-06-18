@@ -3,6 +3,7 @@ package com.example.cinemavillage.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -13,6 +14,10 @@ public class Movie {
     private Long id;
     private String title;
     private String director;
+    @Column(length = 10000)
+    private String overview;
+    private LocalDate releaseDate;
+    private Integer runtime;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -58,5 +63,29 @@ public class Movie {
 
     public void setScreenings(List<Screening> screenings) {
         this.screenings = screenings;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public LocalDate getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(LocalDate releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public Integer getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(Integer runtime) {
+        this.runtime = runtime;
     }
 }

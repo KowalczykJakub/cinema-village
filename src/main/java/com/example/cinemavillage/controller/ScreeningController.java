@@ -5,8 +5,10 @@ import com.example.cinemavillage.model.Room;
 import com.example.cinemavillage.model.Screening;
 import com.example.cinemavillage.service.RoomService;
 import com.example.cinemavillage.service.ScreeningService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,5 +30,10 @@ public class ScreeningController {
     @GetMapping("/{id}")
     public Screening getScreening(@PathVariable Long id) {
         return screeningService.findScreeningById(id);
+    }
+
+    @GetMapping("/date")
+    public List<Screening> getDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return screeningService.findScreeningsByDate(date);
     }
 }

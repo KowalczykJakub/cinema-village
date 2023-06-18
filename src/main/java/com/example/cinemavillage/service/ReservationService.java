@@ -25,11 +25,11 @@ public class ReservationService {
     }
 
     @Transactional
-    public void reserveSeat(Long screeningId, Long roomId, Integer rowNumber, Integer seatNumber) {
+    public void reserveSeat(Long screeningId, Integer rowNumber, Integer seatNumber) {
         Screening screening = screeningRepository.findById(screeningId)
                 .orElseThrow(() -> new RuntimeException("Screening does not exist."));
 
-        Seat seat = seatRepository.findByRowRoomIdAndRowRowNumberAndSeatNumber(roomId, rowNumber, seatNumber);
+        Seat seat = seatRepository.findByRowRoomIdAndRowRowNumberAndSeatNumber(screening.getRoom().getId(), rowNumber, seatNumber);
 
         if (seat == null) {
             throw new RuntimeException("Seat does not exist.");
