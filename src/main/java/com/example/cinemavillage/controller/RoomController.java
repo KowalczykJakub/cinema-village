@@ -2,13 +2,10 @@ package com.example.cinemavillage.controller;
 
 import com.example.cinemavillage.model.*;
 import com.example.cinemavillage.repository.ReservationRepository;
-import com.example.cinemavillage.repository.ScreeningRepository;
 import com.example.cinemavillage.service.RoomService;
 import com.example.cinemavillage.service.ScreeningService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/rooms")
@@ -23,11 +20,6 @@ public class RoomController {
         this.roomService = roomService;
         this.screeningService = screeningService;
         this.reservationRepository = reservationRepository;
-    }
-
-    @GetMapping
-    public List<Room> getRooms() {
-        return roomService.findAllRooms();
     }
 
     @GetMapping("/{id}/screening/{screeningId}")

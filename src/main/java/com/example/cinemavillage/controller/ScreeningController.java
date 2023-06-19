@@ -3,7 +3,6 @@ package com.example.cinemavillage.controller;
 import com.example.cinemavillage.model.AvailableSeatsDto;
 import com.example.cinemavillage.model.MovieInfoDto;
 import com.example.cinemavillage.model.Screening;
-import com.example.cinemavillage.model.ScreeningDto;
 import com.example.cinemavillage.service.ScreeningService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +19,6 @@ public class ScreeningController {
 
     public ScreeningController(ScreeningService screeningService) {
         this.screeningService = screeningService;
-    }
-
-    @GetMapping
-    public List<ScreeningDto> getScreenings() {
-        return screeningService.findAllScreenings();
     }
 
     @GetMapping("/{id}")

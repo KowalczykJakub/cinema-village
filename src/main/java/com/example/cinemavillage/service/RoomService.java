@@ -4,8 +4,6 @@ import com.example.cinemavillage.model.Room;
 import com.example.cinemavillage.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class RoomService {
 
@@ -13,10 +11,6 @@ public class RoomService {
 
     public RoomService(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
-    }
-
-    public List<Room> findAllRooms() {
-        return roomRepository.findAll();
     }
 
     public Room findRoomById(Long id) {

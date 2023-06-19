@@ -48,15 +48,15 @@ public class ReservationService {
         emailElements.add(request.getPersonalInfo().getPhoneNumber());
         emailElements.add(request.getPersonalInfo().getEmail());
 
+        if (seats.size() == 0) {
+            throw new RuntimeException("Seat does not exist.");
+        }
+
         for (Seat seat : seats) {
             emailElements.add("Sala - " + screening.getRoom().getId());
             emailElements.add("Rzad - " + seat.getRow().getRowNumber().toString());
             emailElements.add("Numer miejsca - " + seat.getSeatNumber().toString());
             emailElements.add(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
-
-            if (seat == null) {
-                throw new RuntimeException("Seat does not exist.");
-            }
 
             Reservation existingReservation = reservationRepository.findByScreeningAndSeat(screening, seat);
             if (existingReservation != null) {

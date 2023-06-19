@@ -22,31 +22,9 @@ public class ScreeningService {
         this.reservationRepository = reservationRepository;
     }
 
-    public List<ScreeningDto> findAllScreenings() {
-        List<Screening> screenings = screeningRepository.findAll();
-        return screenings.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-    }
-
     public Screening findScreeningById(Long id) {
         return screeningRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Screening not found with id " + id));
-    }
-
-    public List<Screening> findScreeningsByDate(LocalDate date) {
-        LocalDateTime startOfDay = date.atStartOfDay();
-        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
-        return screeningRepository.findScreeningsByDay(startOfDay, endOfDay);
-    }
-
-    private ScreeningDto mapToDto(Screening screening) {
-        ScreeningDto screeningDto = new ScreeningDto();
-        screeningDto.setId(screening.getId());
-        screeningDto.setMovie(screening.getMovie());
-        screeningDto.setRoomId(screening.getRoom().getId());
-        screeningDto.setScreeningTime(screening.getScreeningTime());
-        return screeningDto;
     }
 
     public AvailableSeatsDto getAvailableSeats(Long screeningId) {
@@ -69,7 +47,6 @@ public class ScreeningService {
                 }
             }
         }
-
         return new AvailableSeatsDto(normalSeats, premiumSeats);
     }
 
@@ -83,6 +60,12 @@ public class ScreeningService {
                 .distinct()
                 .map(movie -> convertToMovieDto(movie, screeningsByMovieId.get(movie.getId())))
                 .collect(Collectors.toList());
+    }
+
+    public List<Screening> findScreeningsByDate(LocalDate date) {
+        LocalDateTime startOfDay = date.atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+        return screeningRepository.findScreeningsByDay(startOfDay, endOfDay);
     }
 
     private ScreeningInfoDto convertToScreeningInfoDto(Screening screening) {
