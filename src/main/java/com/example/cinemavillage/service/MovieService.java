@@ -47,7 +47,7 @@ public class MovieService {
         var moviesResponse = restTemplate.getForObject(url, LinkedHashMap.class);
 
         var movieResults = (List<LinkedHashMap>) moviesResponse.get("results");
-        int numberOfMovies = 5;
+        int numberOfDays = 5;
 
         List<Movie> savedMovies = new ArrayList<>();
         for (var movieResult : movieResults) {
@@ -84,22 +84,27 @@ public class MovieService {
             savedMovies.add(movie);
         }
 
-        generateAndSaveScreenings(savedMovies, numberOfMovies, 7);
+        generateAndSaveScreenings(savedMovies, numberOfDays);
     }
 
-    private void generateAndSaveScreenings(List<Movie> movies, int numDays, int moviesPerDay) {
+    private void generateAndSaveScreenings(List<Movie> movies, int numDays) {
+        int moviesPerDay = 3;
         LocalDateTime now = LocalDateTime.now();
         List<Room> rooms = roomRepository.findAll();
         List<LocalTime> times = List.of(LocalTime.of(10, 0), LocalTime.of(13, 0), LocalTime.of(16, 0), LocalTime.of(20, 0));
 
-        long seed = LocalDate.now().toEpochDay();
+        int index = 0;
 
-        for (Room room : rooms) {
-            for (int i = 0; i < numDays; i++) {
-                Collections.shuffle(movies, new Random(seed + i));
+        for (int i = 0; i < numDays; i++) {
 
-                for (int j = 0; j < moviesPerDay; j++) {
-                    Movie movie = movies.get(j % movies.size());
+            Collections.shuffle(movies);
+
+            for (int j = 0; j < moviesPerDay; j++) {
+
+                for (Room room : rooms) {
+
+                    Movie movie = movies.get(index);
+                    index++;
 
                     for (LocalTime time : times) {
                         LocalDateTime dateTime = now.plusDays(i).with(time);
@@ -113,6 +118,7 @@ public class MovieService {
                     }
                 }
             }
+            index = 0;
         }
     }
 }
