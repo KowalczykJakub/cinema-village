@@ -6,6 +6,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Configuration
 public class StartupConfiguration {
 
@@ -18,16 +21,22 @@ public class StartupConfiguration {
     @Bean
     public CommandLineRunner loadData() {
         return (args) -> {
-            Room room = JsonUtil.readJsonWithObjectMapper("src/main/resources/json/example-of-room.json");
-            if (room.getRows() != null) {
-                room.getRows().forEach(row -> {
-                    row.setRoom(room);
-                    if (row.getSeats() != null) {
-                        row.getSeats().forEach(seat -> seat.setRow(row));
-                    }
-                });
+            List<Room> rooms = new ArrayList<>();
+            rooms.add(JsonUtil.readJsonWithObjectMapper("src/main/resources/json/room1.json"));
+            rooms.add(JsonUtil.readJsonWithObjectMapper("src/main/resources/json/room2.json"));
+            rooms.add(JsonUtil.readJsonWithObjectMapper("src/main/resources/json/room3.json"));
+
+            for (Room room : rooms) {
+                if (room.getRows() != null) {
+                    room.getRows().forEach(row -> {
+                        row.setRoom(room);
+                        if (row.getSeats() != null) {
+                            row.getSeats().forEach(seat -> seat.setRow(row));
+                        }
+                    });
+                }
+                roomRepository.save(room);
             }
-            roomRepository.save(room);
         };
     }
 }

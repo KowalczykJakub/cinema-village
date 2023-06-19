@@ -89,26 +89,28 @@ public class MovieService {
 
     private void generateAndSaveScreenings(List<Movie> movies, int numDays, int moviesPerDay) {
         LocalDateTime now = LocalDateTime.now();
-        Room room = roomRepository.findById(1L).orElseThrow(() -> new RuntimeException("Room not found"));
+        List<Room> rooms = roomRepository.findAll();
         List<LocalTime> times = List.of(LocalTime.of(10, 0), LocalTime.of(13, 0), LocalTime.of(16, 0), LocalTime.of(20, 0));
 
         long seed = LocalDate.now().toEpochDay();
 
-        for (int i = 0; i < numDays; i++) {
-            Collections.shuffle(movies, new Random(seed + i));
+        for (Room room : rooms) {
+            for (int i = 0; i < numDays; i++) {
+                Collections.shuffle(movies, new Random(seed + i));
 
-            for (int j = 0; j < moviesPerDay; j++) {
-                Movie movie = movies.get(j % movies.size());
+                for (int j = 0; j < moviesPerDay; j++) {
+                    Movie movie = movies.get(j % movies.size());
 
-                for (LocalTime time : times) {
-                    LocalDateTime dateTime = now.plusDays(i).with(time);
+                    for (LocalTime time : times) {
+                        LocalDateTime dateTime = now.plusDays(i).with(time);
 
-                    Screening screening = new Screening();
-                    screening.setScreeningTime(dateTime);
-                    screening.setMovie(movie);
-                    screening.setRoom(room);
+                        Screening screening = new Screening();
+                        screening.setScreeningTime(dateTime);
+                        screening.setMovie(movie);
+                        screening.setRoom(room);
 
-                    screeningRepository.save(screening);
+                        screeningRepository.save(screening);
+                    }
                 }
             }
         }

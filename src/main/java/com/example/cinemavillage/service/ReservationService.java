@@ -1,10 +1,7 @@
 package com.example.cinemavillage.service;
 
 import com.example.cinemavillage.PdfGenerator;
-import com.example.cinemavillage.model.Reservation;
-import com.example.cinemavillage.model.ReservationRequest;
-import com.example.cinemavillage.model.Screening;
-import com.example.cinemavillage.model.Seat;
+import com.example.cinemavillage.model.*;
 import com.example.cinemavillage.repository.ReservationRepository;
 import com.example.cinemavillage.repository.ScreeningRepository;
 import com.example.cinemavillage.repository.SeatRepository;
@@ -35,32 +32,42 @@ public class ReservationService {
         Screening screening = screeningRepository.findById(request.getScreeningId())
                 .orElseThrow(() -> new RuntimeException("Screening does not exist."));
 
-        Seat seat = seatRepository.findByRowRoomIdAndRowRowNumberAndSeatNumber(screening.getRoom().getId(), request.getRowNumber(), request.getSeatNumber());
+        List<SeatProperties> seatProps = request.getSeatProperties();
+        List<Seat> seats = new ArrayList<>();
+
+        for (SeatProperties seatProp : seatProps) {
+            seats.add(seatRepository.findByRowRoomIdAndRowRowNumberAndSeatNumber(screening.getRoom().getId(), seatProp.getRowNumber(), seatProp.getSeatNumber()));
+        }
 
         List<String> emailElements = new ArrayList<>();
+
         emailElements.add(screening.getMovie().getTitle());
         emailElements.add(screening.getScreeningTime().toString());
         emailElements.add(request.getPersonalInfo().getFirstName());
         emailElements.add(request.getPersonalInfo().getLastName());
         emailElements.add(request.getPersonalInfo().getPhoneNumber());
         emailElements.add(request.getPersonalInfo().getEmail());
-        emailElements.add("Sala - " + screening.getRoom().getId());
-        emailElements.add("Rzad - " + request.getRowNumber().toString());
-        emailElements.add("Numer miejsca - " + request.getSeatNumber().toString());
 
-        if (seat == null) {
-            throw new RuntimeException("Seat does not exist.");
+        for (Seat seat : seats) {
+            emailElements.add("Sala - " + screening.getRoom().getId());
+            emailElements.add("Rzad - " + seat.getRow().getRowNumber().toString());
+            emailElements.add("Numer miejsca - " + seat.getSeatNumber().toString());
+            emailElements.add(" = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ");
+
+            if (seat == null) {
+                throw new RuntimeException("Seat does not exist.");
+            }
+
+            Reservation existingReservation = reservationRepository.findByScreeningAndSeat(screening, seat);
+            if (existingReservation != null) {
+                throw new RuntimeException("Seat is already reserved for this screening.");
+            }
+
+            Reservation reservation = new Reservation();
+            reservation.setScreening(screening);
+            reservation.setSeat(seat);
+            reservationRepository.save(reservation);
         }
-
-        Reservation existingReservation = reservationRepository.findByScreeningAndSeat(screening, seat);
-        if (existingReservation != null) {
-            throw new RuntimeException("Seat is already reserved for this screening.");
-        }
-
-        Reservation reservation = new Reservation();
-        reservation.setScreening(screening);
-        reservation.setSeat(seat);
-        reservationRepository.save(reservation);
 
         String filePath = "src/main/resources/static/confirmation.pdf";
 

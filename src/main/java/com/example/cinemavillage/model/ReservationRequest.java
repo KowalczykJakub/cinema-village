@@ -1,18 +1,18 @@
 package com.example.cinemavillage.model;
 
+import java.util.List;
+
 public class ReservationRequest {
     private Long screeningId;
-    private Integer rowNumber;
-    private Integer seatNumber;
+    private List<SeatProperties> seatProperties;
     private PersonalInfo personalInfo;
 
     public ReservationRequest() {
     }
 
-    public ReservationRequest(Long screeningId, Integer rowNumber, Integer seatNumber, PersonalInfo personalInfo) {
+    public ReservationRequest(Long screeningId, List<SeatProperties> seatProperties, PersonalInfo personalInfo) {
         this.screeningId = screeningId;
-        this.rowNumber = rowNumber;
-        this.seatNumber = seatNumber;
+        this.seatProperties = seatProperties;
         this.personalInfo = personalInfo;
     }
 
@@ -24,20 +24,12 @@ public class ReservationRequest {
         this.screeningId = screeningId;
     }
 
-    public Integer getRowNumber() {
-        return rowNumber;
+    public List<SeatProperties> getSeatProperties() {
+        return seatProperties;
     }
 
-    public void setRowNumber(Integer rowNumber) {
-        this.rowNumber = rowNumber;
-    }
-
-    public Integer getSeatNumber() {
-        return seatNumber;
-    }
-
-    public void setSeatNumber(Integer seatNumber) {
-        this.seatNumber = seatNumber;
+    public void setSeatProperties(List<SeatProperties> seatProperties) {
+        this.seatProperties = seatProperties;
     }
 
     public PersonalInfo getPersonalInfo() {
