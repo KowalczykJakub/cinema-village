@@ -5,12 +5,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class JsonUtil {
-
-    private static final ObjectMapper mapper = new ObjectMapper();
-
-    public static Room readJsonWithObjectMapper(String filePath) throws IOException {
-        return mapper.readValue(new File(filePath), Room.class);
+    public static Room readJsonWithObjectMapper(String path) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(new InputStreamReader(JsonUtil.class.getResourceAsStream(path)), Room.class);
     }
 }

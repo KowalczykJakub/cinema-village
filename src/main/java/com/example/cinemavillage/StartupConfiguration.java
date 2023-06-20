@@ -22,9 +22,9 @@ public class StartupConfiguration {
     public CommandLineRunner loadData() {
         return (args) -> {
             List<Room> rooms = new ArrayList<>();
-            rooms.add(JsonUtil.readJsonWithObjectMapper("src/main/resources/json/room1.json"));
-            rooms.add(JsonUtil.readJsonWithObjectMapper("src/main/resources/json/room2.json"));
-            rooms.add(JsonUtil.readJsonWithObjectMapper("src/main/resources/json/room3.json"));
+            rooms.add(JsonUtil.readJsonWithObjectMapper("/json/room1.json"));
+            rooms.add(JsonUtil.readJsonWithObjectMapper("/json/room2.json"));
+            rooms.add(JsonUtil.readJsonWithObjectMapper("/json/room3.json"));
 
             for (Room room : rooms) {
                 if (room.getRows() != null) {
