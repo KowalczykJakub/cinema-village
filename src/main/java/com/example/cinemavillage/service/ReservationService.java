@@ -69,7 +69,7 @@ public class ReservationService {
             reservationRepository.save(reservation);
         }
 
-        String filePath = "src/main/resources/static/confirmation.pdf";
+        String filePath = "/tmp/confirmation.pdf";
 
         try {
             PdfGenerator.generatePdf(filePath, emailElements, screening.getMovie().getPosterPath());
